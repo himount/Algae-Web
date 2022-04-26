@@ -25,11 +25,6 @@ st.set_page_config(
 )
 #st.title(" im Sentinel-2 위성영상과 AI분석을 통한 녹조 분석 Web App")
 #st.set_page_config(layout="centered", page_icon="💬", page_title="Commenting app")
-def filedownload(df):
-    csv = df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode() # strings <-> bytes conversion
-    href = f'<a href="data:file/csv;base64,{b64}" download="20220224_sentinels_and_algae_obs.csv">Sample Data File Download</a>'
-    return href
 
 st.image(im, width=100)
 st.write("# Sentinel-2 위성영상과 AI분석을 통한 녹조 분석")
@@ -39,12 +34,14 @@ csv_file = st.sidebar.file_uploader("Select Your Local Observation CSV file")
 if csv_file is not None:
     df = pd.read_csv(csv_file)
 else:
-    df = pd.read_csv('./data/20220224_sentinels_and_algae_obs.csv')
+    use_example = st.sidebar.checkbox('Use Example File', False)
+    if use_example: 
+        df = pd.read_csv('./data/20220224_sentinels_and_algae_obs.csv')
+    else:
+        st.stop()
 
 st.write("#### * 위성관측자료와 녹조관측자료")
 st.write(df.head())
-if csv_file is None:
-    st.markdown(filedownload(df), unsafe_allow_html=True)
 
 st.sidebar.subheader("(STEP-2) 입력자료(위성자료)와 학습자료(녹조관측자료)를 분리")
 divider1 = st.sidebar.number_input(label="녹조관측자료의 첫번째 열",
