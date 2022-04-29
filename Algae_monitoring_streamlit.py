@@ -30,7 +30,7 @@ if csv_file is not None:
 else:
     use_example = st.checkbox('Use Example File', False)
     if use_example: 
-        df = pd.read_csv('./data/20220224_sentinels_and_algae_obs.csv1')
+        df = pd.read_csv('./data/20220224_sentinels_and_algae_obs.csv')
     else:
         st.stop()
 st.write("###### **ㅇ 입력자료현황 (위성, 녹조)**")
